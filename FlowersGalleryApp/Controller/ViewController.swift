@@ -49,8 +49,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
         
         cell.configure(with: flowers[indexPath.item])
         
-        let flowerImage = cell.flowerImage
-        flowerImage?.isHidden = self.selectedIndexPath != indexPath
+        cell.maskImage.isHidden = false
         
         return cell
     }
@@ -58,21 +57,20 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //MARK: - Display show and hide image in CollectionViewCell
-        
-        if self.selectedIndexPath == indexPath {
-            self.selectedIndexPath = IndexPath()
+       
+        let cell = collectionView.cellForItem(at: indexPath) as! FlowersGalleryCell
+        if cell.maskImage.isHidden {
+            cell.maskImage.isHidden = false
+        } else {
+            cell.maskImage.isHidden = true
+            
+            //MARK: - Show alert and convert date
+            
+            let alertData = flowers[indexPath.row]
+            let convertDateFormat = convertDateFormater(date: alertData.releaseDate)
+            
+            displayAlert(withTitle: alertData.name, andMessage: convertDateFormat)
         }
-        else {
-            self.selectedIndexPath = indexPath
-        }
-        self.collectionView.reloadData()
-        
-        //MARK: - Show alert and convert date
-        
-        let alertData = flowers[indexPath.row]
-        let convertDateFormat = convertDateFormater(date: alertData.releaseDate)
-        
-        displayAlert(withTitle: alertData.name, andMessage: convertDateFormat)
     }
     
     func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {

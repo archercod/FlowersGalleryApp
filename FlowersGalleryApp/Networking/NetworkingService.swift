@@ -41,7 +41,7 @@ class NetworkingService {
         session.dataTask(with: url) { (data, _, error) in
             guard let data = data,
                 let image = UIImage(data: data)
-                else { return }
+                else { return print(FlowersError.noImageData)}
             DispatchQueue.main.async {
                 successBlock(image)
             }

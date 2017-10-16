@@ -96,21 +96,34 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
         switch(gesture.state) {
-            
         case .began:
             guard let selectedIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)) else {
                 break
             }
             collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+            setEditing(true, animated: true)
+            startStopWigglingAllVisibleCells()
         case .changed:
             collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             collectionView.endInteractiveMovement()
+            setEditing(false, animated: false)
+            startStopWigglingAllVisibleCells()
         default:
             collectionView.cancelInteractiveMovement()
+            
         }
     }
     
-    
+    func startStopWigglingAllVisibleCells() {
+        let cells = collectionView?.visibleCells as! [FlowersGalleryCell]
+        
+        for cell in cells {
+            if isEditing { cell.startWiggling(element: cell) } else { cell.stopWiggling(element: cell) }
+        }
+    }
+
 }
+
+
 

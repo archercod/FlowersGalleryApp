@@ -58,7 +58,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
         
         //MARK: - Display show and hide image in CollectionViewCell
        
-        let cell = collectionView.cellForItem(at: indexPath) as! FlowersGalleryCell
+        guard let cell = collectionView.cellForItem(at: indexPath) as? FlowersGalleryCell else { return }
         if cell.maskImage.isHidden {
             cell.maskImage.isHidden = false
         } else {
